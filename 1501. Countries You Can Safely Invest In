@@ -1,0 +1,29 @@
+# Write your MySQL query statement below
+
+with cte as (
+select caller_id as id, duration
+from Calls 
+union all 
+select callee_id as id, duration
+from Calls 
+)
+
+-- select id, sum(duration) as total
+-- from cte 
+-- group by id XXXXXXXXXX WRONG
+
+-- eventually, we need to group by country not individuals!
+-- there is no point to group by individuals 
+
+select distinct name as country
+from 
+(
+select left(phone_number,3) as code, avg(duration) total, co.name as name
+from Person p 
+join Calls c
+on c.caller_id = p.id or c.callee_id = p.id 
+join Country co
+on co.country_code = left(phone_number,3)
+group by 1
+having total > (select avg(duration) from cte)
+)t
