@@ -1,0 +1,5 @@
+# Write your MySQL query statement below
+
+select count(distinct account_id) as accounts_count
+from Subscriptions 
+where left(end_date,4)=2021 and account_id not in (select distinct account_id from Streams where left(stream_date,4)=2021)
