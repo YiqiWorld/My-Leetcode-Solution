@@ -1,0 +1,14 @@
+# Write your MySQL query statement below
+
+with cte as 
+(select requester_id as me, accepter_id as friend
+from RequestAccepted 
+union all 
+select accepter_id as me, requester_id as friend 
+from RequestAccepted)
+
+select me as id, count(distinct friend) as num
+from cte
+group by 1 
+order by num desc 
+limit 1 
