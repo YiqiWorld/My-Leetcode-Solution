@@ -1,0 +1,14 @@
+# Write your MySQL query statement below
+
+with cte as 
+(select l1.id, l1.login_date
+from Logins l1
+join Logins l2
+on datediff(l2.login_date, l1.login_date) between 0 and 4 and l1.id=l2.id
+group by 1,2 -- we need to group by login_date to make sure the records have the same start date!!
+having count(distinct l2.login_date)>=5)
+
+select * 
+from Accounts 
+where id in (select id from cte)
+order by id 
