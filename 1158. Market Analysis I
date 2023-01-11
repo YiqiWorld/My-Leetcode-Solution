@@ -1,0 +1,10 @@
+# Write your MySQL query statement below
+
+
+select user_id as buyer_id, join_date, sum(if(o.buyer_id is null, 0, 1))as orders_in_2019
+from Users u
+left join Orders o
+on o.buyer_id = u.user_id and left(o.order_date,4)=2019
+group by 1
+
+-- I can also use count(o.buyer_id) # count(something) --> when something is null, count(something) will return to 0
